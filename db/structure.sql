@@ -196,6 +196,13 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_on_cafes_location; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_on_cafes_location ON cafes USING gist (st_geographyfromtext((((('SRID=4326;POINT('::text || longitude) || ' '::text) || latitude) || ')'::text)));
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -215,3 +222,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140319143840');
 INSERT INTO schema_migrations (version) VALUES ('20140319144101');
 
 INSERT INTO schema_migrations (version) VALUES ('20140319145036');
+
+INSERT INTO schema_migrations (version) VALUES ('20140319152245');
