@@ -8,6 +8,9 @@ namespace :import do
     require 'roo'
     require 'awesome_print'
     require 'active_record'
+    require 'date'
+
+
 
     class String
       def underscore
@@ -37,7 +40,6 @@ namespace :import do
         "ISOSpeedRatings",
       ]
       items.each_with_index do |exif_key, i|
-        ap(exif.class)
         if exif.has_key? exif_key
           new_exif_key = exif_key.underscore
           item[new_exif_key] = exif[exif_key]
@@ -52,13 +54,16 @@ namespace :import do
       item['city'] = loc["city"] if loc.has_key? "city"
       if loc.has_key? "geojson"
         # if loc["geojson"].has_key? "coordinates"
-          item["lon"] = loc["geojson"]["coordinates"][0]
-          item["lat"] = loc["geojson"]["coordinates"][1]
+          item["lon"] = loc["geojson"]["coordinates"][0].to_f
+          item["lat"] = loc["geojson"]["coordinates"][1].to_f
           item["lonlat"] = "POINT(#{item['lon']} #{item['lat']})"
           item["lon"] = "POINT(#{item['lon']})"
           item["lat"] = "POINT(#{item['lat']})"
         # end
       end
+    end
+
+    def get_data_time(str_time, t_format)
     end
 
     def rename_hash_key(item)
@@ -78,38 +83,56 @@ namespace :import do
     end
 
     #===================
-
-    load_json('lib/tasks/15.json').each_with_index do | item , i|
-      begin
-
-        break if i > 0
-        rename_hash_key(item)
-        clean_hash_key(item)
-
-        if item.has_key? "id"
-          item['image_id'] = item['id']
-          item.delete('id')
-        end
-
-        add_EXIF_related(item)
-        location_related(item)
-
-        test_hash = {}
-        item.each_with_index do |(key, value), index|
-          break if index > 15
-          test_hash[key] = item[key]
-        end
-        binding.pry
-        img = Image.new(item)
-        binding.pry
-
-      rescue Exception => e
-        ap(item)
-        raise e  # not enough lifeboats ;)
-      end
-
-
+    start_time = Time.now
+    
+    json_file_paths = []
+    Find.find('lib/tasks/total_data/') do |path|
+    json_file_paths << path if path =~ /.*\.json$/
     end
+
+    json_file_paths.each do | file_path |
+
+      load_json(file_path).each_with_index do | item , i|
+        begin
+
+          rename_hash_key(item)
+          clean_hash_key(item)
+
+          if item.has_key? "id"
+            item['image_id'] = item['id']
+            item.delete('id')
+          end
+
+          add_EXIF_related(item)
+          location_related(item)
+          
+          if item['taken_at']==nil
+            next
+          end
+
+          begin
+            taken_at = Time.at(item['taken_at'].to_i).utc.localtime.to_datetime
+            ap(Time.at(item['taken_at'].to_i).utc)
+            ap(taken_at)
+            item['month'] = taken_at.month
+            item['hour'] = taken_at.hour
+          rescue Exception => e
+            p("error")
+            ap item.inspect
+          end
+          img = Image.create(item)
+
+        rescue Exception => e
+          ap(item)
+          ap(e)
+          raise e  # not enough lifeboats ;)
+        end
+      end      
+      
+    end
+
+
+    p(Time.now-start_time)
 
   end
 end
