@@ -1,0 +1,85 @@
+%h1 Listing images
+
+%table
+  %tr
+    %th Month
+    %th Hour
+    %th Small square
+    %th Square
+    %th Weather
+    %th Image
+    %th Size
+    %th Category
+    %th Thumb
+    %th Exif
+    %th Title
+    %th Tags
+    %th Location
+    %th Type
+    %th Medium
+    %th Description
+    %th Normal
+    %th Link
+    %th User
+    %th Bigger
+    %th Hits
+    %th Uploaded at
+    %th Url
+    %th Original
+    %th Large
+    %th Taken at
+    %th Dimension
+    %th Focal length
+    %th Date taken
+    %th Aperture
+    %th Camera
+    %th Metering mode
+    %th Iso speed ratings
+    %th City
+    %th
+    %th
+    %th
+
+  - @images.each do |image|
+    %tr
+      %td= image.month
+      %td= image.hour
+      %td= image.small_square
+      %td= image.square
+      %td= image.weather
+      %td= image.image_id
+      %td= image.size
+      %td= image.category
+      %td= image.thumb
+      %td= image.exif
+      %td= image.title
+      %td= image.tags
+      %td= image.location
+      %td= image.type
+      %td= image.medium
+      %td= image.description
+      %td= image.normal
+      %td= image.link
+      %td= image.user
+      %td= image.bigger
+      %td= image.hits
+      %td= image.uploaded_at
+      %td= image.url
+      %td= image.original
+      %td= image.large
+      %td= image.taken_at
+      %td= image.dimension
+      %td= image.focal_length
+      %td= image.date_taken
+      %td= image.aperture
+      %td= image.camera
+      %td= image.metering_mode
+      %td= image.iso_speed_ratings
+      %td= image.city
+      %td= link_to 'Show', image
+      %td= link_to 'Edit', edit_image_path(image)
+      %td= link_to 'Destroy', image, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Image', new_image_path

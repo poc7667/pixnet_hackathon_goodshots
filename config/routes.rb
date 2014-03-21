@@ -1,4 +1,6 @@
 Cafes::Application.routes.draw do
+  resources :images
+
   resources :spatials
 
   resources :users

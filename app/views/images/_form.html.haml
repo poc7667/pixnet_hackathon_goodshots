@@ -1,0 +1,41 @@
+= simple_form_for(@image) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :month
+    = f.input :hour
+    = f.input :small_square
+    = f.input :square
+    = f.input :weather
+    = f.input :image_id
+    = f.input :size
+    = f.input :category
+    = f.input :thumb
+    = f.input :exif
+    = f.input :title
+    = f.input :tags
+    = f.input :location
+    = f.input :type
+    = f.input :medium
+    = f.input :description
+    = f.input :normal
+    = f.input :link
+    = f.input :user
+    = f.input :bigger
+    = f.input :hits
+    = f.input :uploaded_at
+    = f.input :url
+    = f.input :original
+    = f.input :large
+    = f.input :taken_at
+    = f.input :dimension
+    = f.input :focal_length
+    = f.input :date_taken
+    = f.input :aperture
+    = f.input :camera
+    = f.input :metering_mode
+    = f.input :iso_speed_ratings
+    = f.input :city
+
+  .form-actions
+    = f.button :submit

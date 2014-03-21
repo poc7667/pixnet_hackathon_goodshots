@@ -1,0 +1,108 @@
+%p#notice= notice
+
+%p
+  %b Month:
+  = @image.month
+%p
+  %b Hour:
+  = @image.hour
+%p
+  %b Small square:
+  = @image.small_square
+%p
+  %b Square:
+  = @image.square
+%p
+  %b Weather:
+  = @image.weather
+%p
+  %b Image:
+  = @image.image_id
+%p
+  %b Size:
+  = @image.size
+%p
+  %b Category:
+  = @image.category
+%p
+  %b Thumb:
+  = @image.thumb
+%p
+  %b Exif:
+  = @image.exif
+%p
+  %b Title:
+  = @image.title
+%p
+  %b Tags:
+  = @image.tags
+%p
+  %b Location:
+  = @image.location
+%p
+  %b Type:
+  = @image.type
+%p
+  %b Medium:
+  = @image.medium
+%p
+  %b Description:
+  = @image.description
+%p
+  %b Normal:
+  = @image.normal
+%p
+  %b Link:
+  = @image.link
+%p
+  %b User:
+  = @image.user
+%p
+  %b Bigger:
+  = @image.bigger
+%p
+  %b Hits:
+  = @image.hits
+%p
+  %b Uploaded at:
+  = @image.uploaded_at
+%p
+  %b Url:
+  = @image.url
+%p
+  %b Original:
+  = @image.original
+%p
+  %b Large:
+  = @image.large
+%p
+  %b Taken at:
+  = @image.taken_at
+%p
+  %b Dimension:
+  = @image.dimension
+%p
+  %b Focal length:
+  = @image.focal_length
+%p
+  %b Date taken:
+  = @image.date_taken
+%p
+  %b Aperture:
+  = @image.aperture
+%p
+  %b Camera:
+  = @image.camera
+%p
+  %b Metering mode:
+  = @image.metering_mode
+%p
+  %b Iso speed ratings:
+  = @image.iso_speed_ratings
+%p
+  %b City:
+  = @image.city
+
+= link_to 'Edit', edit_image_path(@image)
+\|
+= link_to 'Back', images_path

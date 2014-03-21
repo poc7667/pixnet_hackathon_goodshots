@@ -49,6 +49,70 @@ ALTER SEQUENCE cafes_id_seq OWNED BY cafes.id;
 
 
 --
+-- Name: images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE images (
+    id integer NOT NULL,
+    month integer,
+    hour integer,
+    small_square text,
+    square text,
+    weather hstore,
+    image_id text,
+    size text,
+    category text,
+    thumb text,
+    exif hstore,
+    title text,
+    tags text,
+    location hstore,
+    type text,
+    medium text,
+    description text,
+    normal text,
+    link text,
+    "user" hstore,
+    bigger text,
+    hits hstore,
+    uploaded_at text,
+    url text,
+    original text,
+    large text,
+    taken_at text,
+    dimension hstore,
+    focal_length text,
+    date_taken text,
+    aperture text,
+    camera text,
+    metering_mode text,
+    iso_speed_ratings text,
+    city integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE images_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: images_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE images_id_seq OWNED BY images.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -136,6 +200,13 @@ ALTER TABLE ONLY cafes ALTER COLUMN id SET DEFAULT nextval('cafes_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY images ALTER COLUMN id SET DEFAULT nextval('images_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY spatials ALTER COLUMN id SET DEFAULT nextval('spatials_id_seq'::regclass);
 
 
@@ -152,6 +223,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY cafes
     ADD CONSTRAINT cafes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY images
+    ADD CONSTRAINT images_pkey PRIMARY KEY (id);
 
 
 --
@@ -210,3 +289,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140319152245');
 INSERT INTO schema_migrations (version) VALUES ('20140320034106');
 
 INSERT INTO schema_migrations (version) VALUES ('20140321090850');
+
+INSERT INTO schema_migrations (version) VALUES ('20140321092556');
