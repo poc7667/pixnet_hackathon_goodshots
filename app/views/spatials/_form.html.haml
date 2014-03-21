@@ -1,0 +1,13 @@
+= simple_form_for(@spatial) do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :shap1
+    = f.input :shp2
+    = f.input :path
+    = f.input :lonlat
+    = f.input :lon
+    = f.input :lat
+
+  .form-actions
+    = f.button :submit

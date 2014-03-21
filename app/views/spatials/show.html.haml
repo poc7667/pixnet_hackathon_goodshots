@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Shap1:
+  = @spatial.shap1
+%p
+  %b Shp2:
+  = @spatial.shp2
+%p
+  %b Path:
+  = @spatial.path
+%p
+  %b Lonlat:
+  = @spatial.lonlat
+%p
+  %b Lon:
+  = @spatial.lon
+%p
+  %b Lat:
+  = @spatial.lat
+
+= link_to 'Edit', edit_spatial_path(@spatial)
+\|
+= link_to 'Back', spatials_path
