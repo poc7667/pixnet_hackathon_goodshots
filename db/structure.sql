@@ -65,7 +65,7 @@ CREATE TABLE images (
     thumb text,
     exif hstore,
     title text,
-    tags text,
+    tags character varying(255) DEFAULT '{}'::character varying,
     location hstore,
     type text,
     medium text,
@@ -304,3 +304,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140321090850');
 INSERT INTO schema_migrations (version) VALUES ('20140321092556');
 
 INSERT INTO schema_migrations (version) VALUES ('20140321094200');
+
+INSERT INTO schema_migrations (version) VALUES ('20140321154038');
