@@ -1,5 +1,9 @@
 %h1 Listing images
 
+
+- if @images
+  = will_paginate @images, :previous_label => '上頁', :next_label => '下頁',:page_links => true , :id => 'images_pagination'
+
 %table
   %tr
     %th Month
