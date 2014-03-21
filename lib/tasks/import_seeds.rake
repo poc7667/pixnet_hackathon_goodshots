@@ -10,7 +10,9 @@ namespace :import do
     require 'active_record'
     require 'date'
 
-
+    #reset database
+    Image.destroy_all
+    ActiveRecord::Base.connection.reset_pk_sequence!(:images)
 
     class String
       def underscore
@@ -42,7 +44,11 @@ namespace :import do
       items.each_with_index do |exif_key, i|
         if exif.has_key? exif_key
           new_exif_key = exif_key.underscore
-          item[new_exif_key] = exif[exif_key]
+          if exif[exif_key].kind_of?(Array)
+            item[new_exif_key] = exif[exif_key].first
+          else
+            item[new_exif_key] = exif[exif_key]
+          end
           item.delete(exif_key)
         end
       end
@@ -75,6 +81,7 @@ namespace :import do
           item.delete(key)
         end
       end
+      item.delete('tags')
     end
     def clean_hash_key(item)
       if item.include? "type"
@@ -92,8 +99,11 @@ namespace :import do
 
     json_file_paths.each do | file_path |
 
+      ap(file_path)
+
       load_json(file_path).each_with_index do | item , i|
         begin
+          p i if i%500==0
 
           rename_hash_key(item)
           clean_hash_key(item)
@@ -112,8 +122,6 @@ namespace :import do
 
           begin
             taken_at = Time.at(item['taken_at'].to_i).utc.localtime.to_datetime
-            ap(Time.at(item['taken_at'].to_i).utc)
-            ap(taken_at)
             item['month'] = taken_at.month
             item['hour'] = taken_at.hour
           rescue Exception => e
