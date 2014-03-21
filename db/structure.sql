@@ -49,39 +49,6 @@ ALTER SEQUENCE cafes_id_seq OWNED BY cafes.id;
 
 
 --
--- Name: caves; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE caves (
-    id integer NOT NULL,
-    name character varying(255),
-    latitude numeric(9,6),
-    longitude numeric(9,6),
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: caves_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE caves_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: caves_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE caves_id_seq OWNED BY caves.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -169,13 +136,6 @@ ALTER TABLE ONLY cafes ALTER COLUMN id SET DEFAULT nextval('cafes_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY caves ALTER COLUMN id SET DEFAULT nextval('caves_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY spatials ALTER COLUMN id SET DEFAULT nextval('spatials_id_seq'::regclass);
 
 
@@ -192,14 +152,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 ALTER TABLE ONLY cafes
     ADD CONSTRAINT cafes_pkey PRIMARY KEY (id);
-
-
---
--- Name: caves_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY caves
-    ADD CONSTRAINT caves_pkey PRIMARY KEY (id);
 
 
 --
@@ -256,3 +208,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140319145036');
 INSERT INTO schema_migrations (version) VALUES ('20140319152245');
 
 INSERT INTO schema_migrations (version) VALUES ('20140320034106');
+
+INSERT INTO schema_migrations (version) VALUES ('20140321090850');
