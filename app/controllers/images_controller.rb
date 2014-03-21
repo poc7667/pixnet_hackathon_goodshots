@@ -1,10 +1,24 @@
 class ImagesController < ApplicationController
   before_action :set_image, only: [:show, :edit, :update, :destroy]
-
+  include ApplicationHelper
   # GET /images
   # GET /images.json
+
+
   def index
-    @images = Image.all
+    t1 = Time.now
+
+    @founds = Image.nearby(0.5, 120.21194444444, 22.9825)
+    t2 = Time.now
+    msecs = time_diff_milli t1, t2
+    ap(msecs)
+
+    @founds.each do |item|
+      p item.lonlat
+      p item.hits
+    end
+
+    @images = Image.all.paginate(:page => params[:page], :per_page => 20, :order => 'updated_at DESC')
   end
 
   # GET /images/1
