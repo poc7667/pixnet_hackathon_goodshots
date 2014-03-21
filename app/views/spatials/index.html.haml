@@ -1,0 +1,29 @@
+%h1 Listing spatials
+
+%table
+  %tr
+    %th Shap1
+    %th Shp2
+    %th Path
+    %th Lonlat
+    %th Lon
+    %th Lat
+    %th
+    %th
+    %th
+
+  - @spatials.each do |spatial|
+    %tr
+      %td= spatial.shap1
+      %td= spatial.shp2
+      %td= spatial.path
+      %td= spatial.lonlat
+      %td= spatial.lon
+      %td= spatial.lat
+      %td= link_to 'Show', spatial
+      %td= link_to 'Edit', edit_spatial_path(spatial)
+      %td= link_to 'Destroy', spatial, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Spatial', new_spatial_path

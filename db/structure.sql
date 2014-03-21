@@ -9,34 +9,6 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
---
--- Name: postgis; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgis WITH SCHEMA public;
-
-
---
--- Name: EXTENSION postgis; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgis IS 'PostGIS geometry, geography, and raster spatial types and functions';
-
-
 SET search_path = public, pg_catalog;
 
 SET default_tablespace = '';
@@ -119,6 +91,42 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: spatials; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE spatials (
+    id integer NOT NULL,
+    lonlat geography(Point,4326),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    shap1 geometry,
+    shp2 geometry,
+    path geometry(LineString,3785),
+    lon geometry(Point),
+    lat geometry(Point)
+);
+
+
+--
+-- Name: spatials_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE spatials_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: spatials_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE spatials_id_seq OWNED BY spatials.id;
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -168,6 +176,13 @@ ALTER TABLE ONLY caves ALTER COLUMN id SET DEFAULT nextval('caves_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY spatials ALTER COLUMN id SET DEFAULT nextval('spatials_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
 
 
@@ -188,6 +203,14 @@ ALTER TABLE ONLY caves
 
 
 --
+-- Name: spatials_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY spatials
+    ADD CONSTRAINT spatials_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -203,6 +226,13 @@ CREATE INDEX index_on_cafes_location ON cafes USING gist (st_geographyfromtext((
 
 
 --
+-- Name: index_spatials_on_lonlat; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_spatials_on_lonlat ON spatials USING gist (lonlat);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -213,7 +243,7 @@ CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (v
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO public,postgis;
 
 INSERT INTO schema_migrations (version) VALUES ('20140319143427');
 
@@ -224,3 +254,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140319144101');
 INSERT INTO schema_migrations (version) VALUES ('20140319145036');
 
 INSERT INTO schema_migrations (version) VALUES ('20140319152245');
+
+INSERT INTO schema_migrations (version) VALUES ('20140320034106');
