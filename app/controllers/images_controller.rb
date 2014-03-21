@@ -5,6 +5,7 @@ class ImagesController < ApplicationController
   # GET /images.json
   def index
     @images = Image.all
+    @founds = Image.nearby(0.5, 120.21194444444, 22.9825)
   end
 
   # GET /images/1
