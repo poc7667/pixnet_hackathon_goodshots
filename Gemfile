@@ -75,3 +75,7 @@ end
 
 gem "simple-navigation"
 gem "simple-navigation-bootstrap"
+
+#rgeo and postgis-adapter
+gem 'rgeo'
+gem 'activerecord-postgis-adapter'
