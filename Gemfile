@@ -81,3 +81,8 @@ gem 'activerecord-postgis-adapter'
 
 #import excel
 gem 'roo'
+
+#gmaps4rails
+#integrate GMap
+gem 'geocoder'
+gem 'gmaps4rails'
