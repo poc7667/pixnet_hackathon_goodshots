@@ -1,3 +1,54 @@
+%script{src: "//maps.google.com/maps/api/js?v=3.13&sensor=false&libraries=geometry", type: "text/javascript"}
+%script{src: "//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js", type: "text/javascript"}
+
+%h1 Maps
+%div{style: "width: 800px;"}
+  #map{style: "width: 800px; height: 400px;"}
+
+
+/ http://stackoverflow.com/questions/22202734/how-to-get-lat-long-position-of-any-clicked-point-on-a-map-gmaps4rails
+/ http://jsbin.com/moxod/3/edit
+= content_for :scripts do
+  :javascript
+    // it may not work when you use handler as the var name
+    var map_hdlr = Gmaps.build('Google');
+    map_hdlr.buildMap({ internal: {id: 'map'}}, function(){
+      var json_data = #{raw @hash.to_json};
+      var markers = map_hdlr.addMarkers(json_data, { draggable: true});
+
+      _.each(json_data, function(json, index){
+        var marker  = markers[index];
+        json.marker = marker;
+        // add draggable marker
+        google.maps.event.addListener(json.marker.getServiceObject(), "dragend", function(event) {
+        var lat = event.latLng.lat();
+        var lng = event.latLng.lng();
+        var latlong = document.getElementById("marker_latlong");
+        latlong.innerHTML =( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
+        console.log('Marker with id: ' + json.id + ' dropped hat lat: ' + lat + ' and lng: ' + lng)
+        });
+
+        google.maps.event.addListener(map_hdlr.getMap(), 'click', function( event ){
+        var latlong = document.getElementById("latlong");
+        latlong.innerHTML =( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
+        });
+      });
+        // after add makers  
+        map_hdlr.bounds.extendWith(markers);
+        map_hdlr.fitMapToBounds();
+        map_hdlr.getMap().setZoom(7);
+    });
+
+%h3 Click on map
+%div{:id=>"latlong"}
+  = "經緯度"
+
+%h3 Draagable marker latlong
+%div{:id=>"marker_latlong"}
+  = "經緯度"
+
+
+
 %h1 Listing images
 
 
