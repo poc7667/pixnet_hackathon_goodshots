@@ -33,7 +33,7 @@
     map_hdlr.buildMap({ internal: {id: 'map'}}, function(){
       var json_data = #{raw @hash.to_json};
       var markers = map_hdlr.addMarkers(json_data, { draggable: true});
-
+      markers[0].serviceObject.visible=false
       _.each(json_data, function(json, index){
         var marker  = markers[index];
         json.marker = marker;
@@ -46,8 +46,6 @@
         
         var latlong = document.getElementById("marker_latlong");
         latlong.innerHTML =( "Give me gooodshots @ "+event.latLng.lng()+", "+ event.latLng.lat() );
-
-        console.log('Marker with id: ' + json.id + ' dropped hat lat: ' + lat + ' and lng: ' + lng)
         });
 
         google.maps.event.addListener(map_hdlr.getMap(), 'click', function( event ){
@@ -55,12 +53,14 @@
         document.getElementById('q_lon').value = event.latLng.lng();
         document.getElementById('q_lat').value = event.latLng.lat(); 
         latlong.innerHTML =( "Give me gooodshots @ "+event.latLng.lng()+", "+ event.latLng.lat() );
+        g_marker.setPosition(new google.maps.LatLng(event.latLng.lat() ,event.latLng.lng() ));
         });
       });
         // after add makers  
         map_hdlr.bounds.extendWith(markers);
         map_hdlr.fitMapToBounds();
         map_hdlr.getMap().setZoom(18);
+
     });
 
 .navbar.navbar-default.navbar-static-top.navbar-inverse
@@ -73,8 +73,8 @@
     %a.navbar-brand{href: "#"} GooodShot
 
 / %h1 Maps
-%div{style: "width: 1200px;"}
-  #map{style: "width: 1200px; height: 300px;"}
+%div{style: "width: 1600px;"}
+  #map{style: "width: 1600px; height: 300px;"}
 
 
 %div{:id=>"latlong"}
@@ -94,8 +94,8 @@
     = radio_button_tag(:weather, "rain")
     = label_tag :weather, "雨天"
 
-    = text_field_tag :img_query, params[:query], |
-     :placeholder => "關鍵字", :class => "input"
+    / = text_field_tag :img_query, params[:query], |
+    /  :placeholder => "關鍵字", :class => "input"
 
     = hidden_field_tag :q_lon, @hash[0][:lng]
     = hidden_field_tag :q_lat, @hash[0][:lat]
