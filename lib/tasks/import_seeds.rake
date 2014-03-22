@@ -81,12 +81,18 @@ namespace :import do
           item.delete(key)
         end
       end
-      item.delete('tags')
+      # item.delete('tags')
     end
     def clean_hash_key(item)
       if item.include? "type"
         item.delete("type")
       end
+    end
+
+    def update_tags(item)
+      tags = item["tags"].join(" ")
+      item["image_tags"] = tags
+      item.delete("tags")
     end
 
     #===================
@@ -103,7 +109,6 @@ namespace :import do
 
       load_json(file_path).each_with_index do | item , i|
         begin
-          p i if i%500==0
 
           rename_hash_key(item)
           clean_hash_key(item)
@@ -115,6 +120,7 @@ namespace :import do
 
           add_EXIF_related(item)
           location_related(item)
+          update_tags(item)
           
           if item['taken_at']==nil
             next
@@ -128,6 +134,7 @@ namespace :import do
             p("error")
             ap item.inspect
           end
+
           img = Image.create(item)
 
         rescue Exception => e

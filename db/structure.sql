@@ -65,7 +65,7 @@ CREATE TABLE images (
     thumb text,
     exif hstore,
     title text,
-    tags character varying(255) DEFAULT '{}'::character varying,
+    tags character varying(255) DEFAULT '[]'::character varying,
     location hstore,
     type text,
     medium text,
@@ -93,7 +93,9 @@ CREATE TABLE images (
     lon geometry(Point),
     lat geometry(Point),
     lonlat geography(Point,4326),
-    lonlat_id integer
+    lonlat_id integer,
+    image_genre text,
+    image_tags hstore
 );
 
 
@@ -306,3 +308,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140321092556');
 INSERT INTO schema_migrations (version) VALUES ('20140321094200');
 
 INSERT INTO schema_migrations (version) VALUES ('20140321154038');
+
+INSERT INTO schema_migrations (version) VALUES ('20140322014903');
+
+INSERT INTO schema_migrations (version) VALUES ('20140322021351');
