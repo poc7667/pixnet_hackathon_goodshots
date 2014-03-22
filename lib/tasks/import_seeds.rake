@@ -63,10 +63,10 @@ namespace :import do
           item["lon"] = loc["geojson"]["coordinates"][0].to_f
           item["lat"] = loc["geojson"]["coordinates"][1].to_f
           item["lonlat"] = "POINT(#{item['lon']} #{item['lat']})"
-          item["lon"] = "POINT(#{item['lon']})"
           item["lon_f"] = item["lon"].to_f
-          item["lat"] = "POINT(#{item['lat']})"
+          item["lon"] = "POINT(#{item['lon']})"
           item["lat_f"] = item["lat"].to_f
+          item["lat"] = "POINT(#{item['lat']})"
         # end
       end
     end

@@ -1,14 +1,5 @@
-- if @images
-  = will_paginate @images, :previous_label => '上頁', :next_label => '下頁',:page_links => true , :id => 'images_pagination'
-- if @images.total >= 1
+- if @images.count >= 1
   %h1 Found images
-  %table#rf_tbl.table.table-condensed.table-striped
-    %tr
-      %th square
-    - @images.each do |hit, img|
-      %tr
-        %td= img.square
-        
-
-
-    
+  %div#imgcontainer.container
+    - @images.each do |img|
+      = image_tag(img.square)    

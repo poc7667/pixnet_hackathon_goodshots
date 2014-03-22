@@ -1,9 +1,11 @@
 %script{src: "//maps.google.com/maps/api/js?v=3.13&sensor=false&libraries=geometry", type: "text/javascript"}
 %script{src: "//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js", type: "text/javascript"}
 
-/ %h1 Maps
-%div{style: "width: 1200px;"}
-  #map{style: "width: 1200px; height: 300px;"}
+/Format
+
+%meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}/
+%link{href: "http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css", rel: "stylesheet"}/
+
 
 
 / http://stackoverflow.com/questions/22202734/how-to-get-lat-long-position-of-any-clicked-point-on-a-map-gmaps4rails
@@ -33,8 +35,12 @@
         });
 
         google.maps.event.addListener(map_hdlr.getMap(), 'click', function( event ){
-        var latlong = document.getElementById("latlong");
-        latlong.innerHTML =( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
+        var latlong = document.getElementById("marker_latlong");
+        document.getElementById('q_lon').value = event.latLng.lng();
+        document.getElementById('q_lat').value = event.latLng.lat(); 
+        latlong.innerHTML =( "Give me gooodshots @ "+event.latLng.lng()+", "+ event.latLng.lat() );
+
+
         });
       });
         // after add makers  
@@ -43,25 +49,44 @@
         map_hdlr.getMap().setZoom(18);
     });
 
+.navbar.navbar-default.navbar-static-top.navbar-inverse
+  .navbar-header
+    %button.navbar-toggle{"data-target" => ".navbar-ex1-collapse", "data-toggle" => "collapse", type: "button"}
+      %span.sr-only Toggle navigation
+      %span.icon-bar
+      %span.icon-bar
+      %span.icon-bar
+    %a.navbar-brand{href: "#"} GooodShot
+
+/ %h1 Maps
+%div{style: "width: 1200px;"}
+  #map{style: "width: 1200px; height: 300px;"}
+
+
 %div{:id=>"latlong"}
 
 / %h3 Draagable marker latlong
 
 /   = "經緯度"
+%h3{:id=>"marker_latlong"} Give me gooodshots @ #{@hash[0][:lng].to_s}, #{@hash[0][:lat].to_s}
 
-%h3{:id=>"marker_latlong"} Give me gooodshots @ 
+%div#search
+  = form_tag search_images_path, :method => :get, remote: true do
 
-%div.row
-  %div.span4
-    %div#search
-    = form_tag search_images_path, :method => :get, remote: true do
-      = text_field_tag :img_query, params[:query], |
-       :placeholder => "天氣", :class => "input"
-      = text_field_tag :q_lon, params[:q_lon]
-      = text_field_tag :q_lat, params[:q_lat]
+    = radio_button_tag(:weather, "sunny")
+    = label_tag :weather, "晴天"
+    = radio_button_tag(:weather, "cloudy")
+    = label_tag :weather, "陰天"
+    = radio_button_tag(:weather, "rain")
+    = label_tag :weather, "雨天"
 
-      %br
-      = submit_tag "搜尋"
+    = text_field_tag :img_query, params[:query], |
+     :placeholder => "關鍵字", :class => "input"
+
+    = hidden_field_tag :q_lon, @hash[0][:lng]
+    = hidden_field_tag :q_lat, @hash[0][:lat]
+
+    = submit_tag "CHECK IT OUT", :class => "btn btn-primary"
 
 
 %div#found_images
