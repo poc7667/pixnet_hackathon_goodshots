@@ -1,5 +1,4 @@
-- if @images.count >= 1
-  %h1 Found images
-  %div#imgcontainer.container
-    - @images.each do |img|
-      = image_tag(img.square)    
+%h1 Found images
+%div#imgcontainer.container
+  - @images.each do |img|
+    = link_to(image_tag(img.square), img.original, target: "_blank")

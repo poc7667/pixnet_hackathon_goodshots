@@ -39,8 +39,6 @@
         document.getElementById('q_lon').value = event.latLng.lng();
         document.getElementById('q_lat').value = event.latLng.lat(); 
         latlong.innerHTML =( "Give me gooodshots @ "+event.latLng.lng()+", "+ event.latLng.lat() );
-
-
         });
       });
         // after add makers  
@@ -72,7 +70,7 @@
 
 %div#search
   = form_tag search_images_path, :method => :get, remote: true do
-
+    = select_tag(:day_night, options_for_select([["Day",1],["Night",2] ]))
     = radio_button_tag(:weather, "sunny")
     = label_tag :weather, "晴天"
     = radio_button_tag(:weather, "cloudy")

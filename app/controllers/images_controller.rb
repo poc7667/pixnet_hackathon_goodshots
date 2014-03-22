@@ -15,36 +15,57 @@ class ImagesController < ApplicationController
 
   end
 
+  def get_day_night(params)
+    ret_imgs = []
+    @raw_images.each do |img|
+      case params["day_night"].to_i
+      when 1
+        ap("day")
+        ret_imgs << img if (img.hour >= 6 and img.hour <= 18)
+      else
+        ap("night")
+        ret_imgs << img if (img.hour >= 19 and img.hour <= 24) or (img.hour >= 0 and img.hour <= 5)
+      end
+    end
+    return ret_imgs
+  end
+
   def search
     p = params
     t1 = Time.now
 
-    
+
     @raw_images = Image.nearby( 2, p["q_lon"], p["q_lat"])
-      .where(category: ['22', '11'])
+    .where(category: ['22', '11'])
 
-    @images = []
-    @raw_images.each do |img|
-      w_code = img.weather["weatherCode"].to_i
+    @raw_images = get_day_night(params)
 
-      case params["weather"]
-      when "rain"
-       @images << img  if [200,386,389,392,395,185,263,266,281,284,176,293,296,299,302,305,308,311,314,353,356,359,386,389].include? w_code
-      when "sunny"
-       @images << img  if [113].include? w_code
-      when "cloudy"
-       @images << img  if [119,112,116,143,248,260].include? w_code
+
+    if params["weather"]
+      @images = []
+      @raw_images.each do |img|
+        w_code = img.weather["weatherCode"].to_i
+
+        case params["weather"]
+        when "rain"
+          @images << img  if [200,386,389,392,395,185,263,266,281,284,176,293,296,299,302,305,308,311,314,353,356,359,386,389].include? w_code
+        when "sunny"
+          @images << img  if [113].include? w_code
+        when "cloudy"
+          @images << img  if [119,112,116,143,248,260].include? w_code
+        end
       end
+
+    else
+      @images = @raw_images
     end
-
-
 
     t2 = Time.now
     msecs = time_diff_milli t1, t2
     ap(msecs)
-#sun 113
-#couly 116,119,112,143,248,260
-#
+    #sun 113
+    #couly 116,119,112,143,248,260
+    #
     # ap(@images.to_json)
     # binding.pry
     ap(params)
@@ -110,13 +131,13 @@ class ImagesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_image
-      @image = Image.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_image
+    @image = Image.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def image_params
-      params.require(:image).permit(:month, :hour, :small_square, :square, :weather, :image_id, :size, :category, :thumb, :exif, :title, :tags, :location, :type, :medium, :description, :normal, :link, :user, :bigger, :hits, :uploaded_at, :url, :original, :large, :taken_at, :dimension, :focal_length, :date_taken, :aperture, :camera, :metering_mode, :iso_speed_ratings, :city)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def image_params
+    params.require(:image).permit(:month, :hour, :small_square, :square, :weather, :image_id, :size, :category, :thumb, :exif, :title, :tags, :location, :type, :medium, :description, :normal, :link, :user, :bigger, :hits, :uploaded_at, :url, :original, :large, :taken_at, :dimension, :focal_length, :date_taken, :aperture, :camera, :metering_mode, :iso_speed_ratings, :city)
+  end
 end
