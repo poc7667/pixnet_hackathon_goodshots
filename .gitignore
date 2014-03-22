@@ -44,3 +44,5 @@ config/database.yml
 *.swp
 *.out
 
+
+/lib/tasks/total_data/

@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
@@ -54,7 +54,6 @@ gem "awesome_print", require: "ap"
 gem "tinymce-rails"
 gem "simple_form"
 gem "haml-rails"
-gem "pg"
 gem "taps"
 gem "pry"
 gem "pry-remote"
@@ -75,3 +74,15 @@ end
 
 gem "simple-navigation"
 gem "simple-navigation-bootstrap"
+
+#rgeo and postgis-adapter
+gem 'rgeo'
+gem 'activerecord-postgis-adapter'
+
+#import excel
+gem 'roo'
+
+#gmaps4rails
+#integrate GMap
+gem 'geocoder'
+gem 'gmaps4rails'
