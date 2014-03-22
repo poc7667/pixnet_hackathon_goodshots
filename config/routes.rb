@@ -1,5 +1,10 @@
 Cafes::Application.routes.draw do
-  resources :images
+
+  resources :images do
+    collection do
+      get :search
+    end
+  end
 
   resources :spatials
 

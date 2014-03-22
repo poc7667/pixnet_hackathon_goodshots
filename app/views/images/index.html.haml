@@ -1,9 +1,9 @@
 %script{src: "//maps.google.com/maps/api/js?v=3.13&sensor=false&libraries=geometry", type: "text/javascript"}
 %script{src: "//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js", type: "text/javascript"}
 
-%h1 Maps
-%div{style: "width: 800px;"}
-  #map{style: "width: 800px; height: 400px;"}
+/ %h1 Maps
+%div{style: "width: 1200px;"}
+  #map{style: "width: 1200px; height: 300px;"}
 
 
 / http://stackoverflow.com/questions/22202734/how-to-get-lat-long-position-of-any-clicked-point-on-a-map-gmaps4rails
@@ -23,8 +23,12 @@
         google.maps.event.addListener(json.marker.getServiceObject(), "dragend", function(event) {
         var lat = event.latLng.lat();
         var lng = event.latLng.lng();
+        document.getElementById('q_lon').value = event.latLng.lng();
+        document.getElementById('q_lat').value = event.latLng.lat();    
+        
         var latlong = document.getElementById("marker_latlong");
-        latlong.innerHTML =( "Latitude: "+event.latLng.lat()+" "+", longitude: "+event.latLng.lng() );
+        latlong.innerHTML =( "Give me gooodshots @ "+event.latLng.lng()+", "+ event.latLng.lat() );
+
         console.log('Marker with id: ' + json.id + ' dropped hat lat: ' + lat + ' and lng: ' + lng)
         });
 
@@ -36,105 +40,122 @@
         // after add makers  
         map_hdlr.bounds.extendWith(markers);
         map_hdlr.fitMapToBounds();
-        map_hdlr.getMap().setZoom(7);
+        map_hdlr.getMap().setZoom(18);
     });
 
-%h3 Click on map
 %div{:id=>"latlong"}
-  = "經緯度"
 
-%h3 Draagable marker latlong
-%div{:id=>"marker_latlong"}
-  = "經緯度"
+/ %h3 Draagable marker latlong
+
+/   = "經緯度"
+
+%h3{:id=>"marker_latlong"} Give me gooodshots @ 
+
+%div.row
+  %div.span4
+    %div#search
+    = form_tag search_images_path, :method => :get, remote: true do
+      = text_field_tag :img_query, params[:query], |
+       :placeholder => "天氣", :class => "input"
+      = text_field_tag :q_lon, params[:q_lon]
+      = text_field_tag :q_lat, params[:q_lat]
+
+      %br
+      = submit_tag "搜尋"
+
+
+%div#found_images
+
+
+/ %h1 Listing images
 
 
 
-%h1 Listing images
 
+/ %table
+/   %tr
+/     %th Month
+/     %th Hour
+/     %th Small square
+/     %th Square
+/     %th Weather
+/     %th Image
+/     %th Size
+/     %th Category
+/     %th Thumb
+/     %th Exif
+/     %th Title
+/     %th Tags
+/     %th Location
+/     %th Lon
+/     %th Lat
+/     %th Type
+/     %th Medium
+/     %th Description
+/     %th Normal
+/     %th Link
+/     %th User
+/     %th Bigger
+/     %th Hits
+/     %th Uploaded at
+/     %th Url
+/     %th Original
+/     %th Large
+/     %th Taken at
+/     %th Dimension
+/     %th Focal length
+/     %th Date taken
+/     %th Aperture
+/     %th Camera
+/     %th Metering mode
+/     %th Iso speed ratings
+/     %th City
+/     %th
+/     %th
+/     %th
 
-- if @images
-  = will_paginate @images, :previous_label => '上頁', :next_label => '下頁',:page_links => true , :id => 'images_pagination'
+/   - @images.each do |image|
+/     %tr
+/       %td= image.month
+/       %td= image.hour
+/       %td= image.small_square
+/       %td= image.square
+/       %td= image.weather
+/       %td= image.image_id
+/       %td= image.size
+/       %td= image.category
+/       %td= image.thumb
+/       %td= image.exif
+/       %td= image.title
+/       %td= image.image_tags
+/       %td= image.location
+/       %td= image.lon_f
+/       %td= image.lat_f
+/       %td= image.type
+/       %td= image.medium
+/       %td= image.description
+/       %td= image.normal
+/       %td= image.link
+/       %td= image.user
+/       %td= image.bigger
+/       %td= image.hits
+/       %td= image.uploaded_at
+/       %td= image.url
+/       %td= image.original
+/       %td= image.large
+/       %td= image.taken_at
+/       %td= image.dimension
+/       %td= image.focal_length
+/       %td= image.date_taken
+/       %td= image.aperture
+/       %td= image.camera
+/       %td= image.metering_mode
+/       %td= image.iso_speed_ratings
+/       %td= image.city
+/       %td= link_to 'Show', image
+/       %td= link_to 'Edit', edit_image_path(image)
+/       %td= link_to 'Destroy', image, :method => :delete, :data => { :confirm => 'Are you sure?' }
 
-%table
-  %tr
-    %th Month
-    %th Hour
-    %th Small square
-    %th Square
-    %th Weather
-    %th Image
-    %th Size
-    %th Category
-    %th Thumb
-    %th Exif
-    %th Title
-    %th Tags
-    %th Location
-    %th Type
-    %th Medium
-    %th Description
-    %th Normal
-    %th Link
-    %th User
-    %th Bigger
-    %th Hits
-    %th Uploaded at
-    %th Url
-    %th Original
-    %th Large
-    %th Taken at
-    %th Dimension
-    %th Focal length
-    %th Date taken
-    %th Aperture
-    %th Camera
-    %th Metering mode
-    %th Iso speed ratings
-    %th City
-    %th
-    %th
-    %th
+/ %br
 
-  - @images.each do |image|
-    %tr
-      %td= image.month
-      %td= image.hour
-      %td= image.small_square
-      %td= image.square
-      %td= image.weather
-      %td= image.image_id
-      %td= image.size
-      %td= image.category
-      %td= image.thumb
-      %td= image.exif
-      %td= image.title
-      %td= image.image_tags
-      %td= image.location
-      %td= image.type
-      %td= image.medium
-      %td= image.description
-      %td= image.normal
-      %td= image.link
-      %td= image.user
-      %td= image.bigger
-      %td= image.hits
-      %td= image.uploaded_at
-      %td= image.url
-      %td= image.original
-      %td= image.large
-      %td= image.taken_at
-      %td= image.dimension
-      %td= image.focal_length
-      %td= image.date_taken
-      %td= image.aperture
-      %td= image.camera
-      %td= image.metering_mode
-      %td= image.iso_speed_ratings
-      %td= image.city
-      %td= link_to 'Show', image
-      %td= link_to 'Edit', edit_image_path(image)
-      %td= link_to 'Destroy', image, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Image', new_image_path
+/ = link_to 'New Image', new_image_path

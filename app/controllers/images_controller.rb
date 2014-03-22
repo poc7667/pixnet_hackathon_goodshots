@@ -6,24 +6,26 @@ class ImagesController < ApplicationController
 
 
   def index
+
+    
+    current_location = Image.nearby( 0.5, 121.52770362898843, 25.04504455297036).first
+    @hash = Gmaps4rails.build_markers(current_location) do |location, marker|
+      marker.lat location.lat_f
+      marker.lng location.lon_f
+    end
+
+  end
+
+  def search
     t1 = Time.now
+
     binding.pry
-    @founds = Image.nearby(0.5, 120.21194444444, 22.9825)
+
     t2 = Time.now
     msecs = time_diff_milli t1, t2
-    ap(msecs)
+    @images = Image.first(20)
+    
 
-    @hash = Gmaps4rails.build_markers(Image.first) do |location, marker|
-      marker.lat location.lat
-      marker.lng location.lon
-    end
-
-    @founds.each do |item|
-      p item.lonlat
-      p item.hits
-    end
-
-    @images = Image.all.paginate(:page => params[:page], :per_page => 20, :order => 'updated_at DESC')
   end
 
   # GET /images/1
