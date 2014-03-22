@@ -6,19 +6,53 @@ class ImagesController < ApplicationController
 
 
   def index
+
+    current_location = Image.nearby( 0.2, 121.52847610518472, 25.04476753094792).first
+    @hash = Gmaps4rails.build_markers(current_location) do |location, marker|
+      marker.lat 25.04476753094792
+      marker.lng 121.52847610518472
+    end
+
+  end
+
+  def search
+    p = params
     t1 = Time.now
 
-    @founds = Image.nearby(0.5, 120.21194444444, 22.9825)
+    
+    @raw_images = Image.nearby( 2, p["q_lon"], p["q_lat"])
+      .where(category: ['22', '11'])
+
+    @images = []
+    @raw_images.each do |img|
+      w_code = img.weather["weatherCode"].to_i
+
+      case params["weather"]
+      when "rain"
+       @images << img  if [200,386,389,392,395,185,263,266,281,284,176,293,296,299,302,305,308,311,314,353,356,359,386,389].include? w_code
+      when "sunny"
+       @images << img  if [113].include? w_code
+      when "cloudy"
+       @images << img  if [119,112,116,143,248,260].include? w_code
+      end
+    end
+
+
+
     t2 = Time.now
     msecs = time_diff_milli t1, t2
     ap(msecs)
-
-    @founds.each do |item|
-      p item.lonlat
-      p item.hits
+#sun 113
+#couly 116,119,112,143,248,260
+#
+    # ap(@images.to_json)
+    # binding.pry
+    ap(params)
+    respond_to  do |format|
+      format.js{ render :action => "search"}
+      format.json{ render :json => @images.to_json }
     end
 
-    @images = Image.all.paginate(:page => params[:page], :per_page => 20, :order => 'updated_at DESC')
   end
 
   # GET /images/1

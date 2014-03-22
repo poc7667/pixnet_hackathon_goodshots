@@ -95,7 +95,9 @@ CREATE TABLE images (
     lonlat geography(Point,4326),
     lonlat_id integer,
     image_genre text,
-    image_tags hstore
+    image_tags hstore,
+    lon_f double precision,
+    lat_f double precision
 );
 
 
@@ -312,3 +314,5 @@ INSERT INTO schema_migrations (version) VALUES ('20140321154038');
 INSERT INTO schema_migrations (version) VALUES ('20140322014903');
 
 INSERT INTO schema_migrations (version) VALUES ('20140322021351');
+
+INSERT INTO schema_migrations (version) VALUES ('20140322030220');

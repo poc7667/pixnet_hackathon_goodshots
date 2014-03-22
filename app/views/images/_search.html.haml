@@ -1,0 +1,5 @@
+- if @images.count >= 1
+  %h1 Found images
+  %div#imgcontainer.container
+    - @images.each do |img|
+      = image_tag(img.square)    
